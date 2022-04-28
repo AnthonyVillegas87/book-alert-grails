@@ -1,5 +1,8 @@
 package book.alert.grails
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class Author {
     Integer id;
     String name;
@@ -7,6 +10,14 @@ class Author {
     List<Book> books;
 
     static hasMany = [books: Book]
+
+    static mapping = {
+        books(cascade: 'all-delete', joinTable: [name: "author_books", key: 'author_id'])
+    }
+
+    Author() {
+
+    }
 
     Author(List<Book> books) {
         this.books = books
@@ -64,7 +75,5 @@ class Author {
     static constraints = {
         name nullable: false, blank: false
     }
-    static mapping = {
-        books(cascade: 'all-delete')
-    }
+
 }

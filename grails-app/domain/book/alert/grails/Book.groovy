@@ -1,5 +1,8 @@
 package book.alert.grails
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class Book {
     Integer id
     String title
@@ -13,8 +16,11 @@ class Book {
 
 
     static belongsTo = Author
-    static hasMany = [author: Author, bookUser: BookUser]
+    static hasMany = [authors: Author, bookUser: BookUser]
 
+    static mapping = {
+        authors joinTable: [name: "author_books", key: 'book_id']
+    }
 
     static constraints = {
         title(nullable: false, maxSize: 100)
@@ -25,7 +31,9 @@ class Book {
 
     }
 
+    Book() {
 
+    }
 
     Book(Integer id, String title, String description, Date releaseDate, String itunesUrl, String artworkUrl, Author author, long externalId, List<BookUser> bookUser) {
         this.id = id
